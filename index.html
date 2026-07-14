@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Soleil — Sunscreen Reimagined. SPF 50. Reef-Safe. Radiant.</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/fraunces@latest/latin-wght-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-wght-normal.css">
+<style>
+  :root{
+    --cream:#FBF3E4;--cream-2:#F3E4D0;--peach:#F7C59F;
+    --coral:#E8826A;--coral-deep:#C75E47;
+    --navy:#1A2238;--navy-soft:#2E3A5F;
+    --sand:#EADFC6;--ink:#161B2E;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;line-height:1.55}
+  .serif{font-family:'Fraunces',serif;font-weight:400;letter-spacing:-0.02em}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 40px;display:flex;justify-content:space-between;align-items:center;transition:all .4s ease;backdrop-filter:blur(0px)}
+  nav.scrolled{background:rgba(251,243,228,.85);backdrop-filter:blur(14px);padding:14px 40px;border-bottom:1px solid rgba(26,34,56,.08)}
+  .logo{font-family:'Fraunces',serif;font-size:26px;font-weight:500;letter-spacing:-0.02em;color:var(--navy)}
+  .logo span{color:var(--coral)}
+  .nav-links{display:flex;gap:36px;list-style:none}
+  .nav-links a{color:var(--navy);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}
+  .nav-links a:hover{color:var(--coral)}
+  .nav-cta{background:var(--navy);color:var(--cream);padding:11px 22px;border-radius:100px;text-decoration:none;font-size:13px;font-weight:600;transition:all .3s;display:inline-flex;align-items:center;gap:8px}
+  .nav-cta:hover{background:var(--coral);transform:translateY(-2px)}
+
+  .hero{min-height:100vh;position:relative;background:linear-gradient(135deg,var(--cream) 0%,var(--cream-2) 60%,var(--peach) 100%);padding:140px 40px 80px;display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-200px;right:-200px;width:700px;height:700px;background:radial-gradient(circle,var(--coral) 0%,transparent 70%);opacity:.25;border-radius:50%;pointer-events:none}
+  .hero::after{content:'';position:absolute;bottom:-300px;left:-150px;width:600px;height:600px;background:radial-gradient(circle,var(--peach) 0%,transparent 70%);opacity:.4;border-radius:50%;pointer-events:none}
+  .hero-text{position:relative;z-index:2}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;background:rgba(26,34,56,.06);padding:8px 16px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);margin-bottom:28px}
+  .eyebrow::before{content:'';width:6px;height:6px;background:var(--coral);border-radius:50%}
+  h1.hero-title{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(48px,7vw,96px);line-height:.95;letter-spacing:-0.035em;color:var(--navy);margin-bottom:28px}
+  h1.hero-title em{font-style:italic;color:var(--coral);font-weight:300}
+  .hero-sub{font-size:18px;color:var(--navy-soft);max-width:500px;margin-bottom:40px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .btn-primary{background:var(--navy);color:var(--cream);padding:16px 30px;border-radius:100px;text-decoration:none;font-weight:600;font-size:15px;transition:all .3s;display:inline-flex;align-items:center;gap:10px;border:none;cursor:pointer}
+  .btn-primary:hover{background:var(--coral);transform:translateY(-2px);box-shadow:0 14px 30px rgba(232,130,106,.35)}
+  .btn-ghost{color:var(--navy);text-decoration:none;font-weight:600;font-size:15px;padding:16px 8px;display:inline-flex;align-items:center;gap:8px;transition:gap .3s}
+  .btn-ghost:hover{gap:14px}
+  .hero-stats{display:flex;gap:40px;margin-top:60px;padding-top:40px;border-top:1px solid rgba(26,34,56,.12)}
+  .stat-num{font-family:'Fraunces',serif;font-size:36px;font-weight:400;color:var(--navy);line-height:1}
+  .stat-label{font-size:12px;color:var(--navy-soft);margin-top:6px;text-transform:uppercase;letter-spacing:.08em}
+
+  .hero-visual{position:relative;z-index:2;display:flex;justify-content:center;align-items:center;height:100%}
+  .sun-disc{position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#FFD9A8 0%,#F7C59F 50%,#E8826A 100%);box-shadow:0 40px 80px rgba(232,130,106,.3)}
+  .sun-rays{position:absolute;width:640px;height:640px;animation:spin 60s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  
+  /* BOTTLE SVG */
+  .bottle-wrap{position:relative;width:380px;max-width:80%;animation:float 6s ease-in-out infinite;filter:drop-shadow(0 40px 60px rgba(26,34,56,.25))}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+  .bottle-svg{width:100%;height:auto;display:block}
+
+  .floating-badge{position:absolute;background:white;padding:14px 18px;border-radius:18px;box-shadow:0 20px 40px rgba(26,34,56,.12);display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:var(--navy)}
+  .badge-1{top:15%;left:-5%;animation:float 5s ease-in-out infinite}
+  .badge-2{bottom:18%;right:-5%;animation:float 5s ease-in-out infinite 1s}
+  .badge-icon{width:32px;height:32px;border-radius:50%;background:var(--cream);display:grid;place-items:center;color:var(--coral)}
+
+  .marquee{background:var(--navy);color:var(--cream);padding:22px 0;overflow:hidden;border-top:1px solid rgba(251,243,228,.1);border-bottom:1px solid rgba(251,243,228,.1)}
+  .marquee-track{display:flex;gap:60px;white-space:nowrap;animation:scroll 30s linear infinite}
+  .marquee-item{font-family:'Fraunces',serif;font-size:28px;font-style:italic;font-weight:300;display:flex;align-items:center;gap:60px}
+  .marquee-item::after{content:'✦';color:var(--coral);font-style:normal}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+
+  section{padding:120px 40px;position:relative}
+  .section-head{text-align:center;max-width:700px;margin:0 auto 80px}
+  .section-eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:18px}
+  .section-title{font-family:'Fraunces',serif;font-size:clamp(36px,5vw,60px);line-height:1.05;letter-spacing:-0.03em;color:var(--navy);font-weight:400}
+  .section-title em{font-style:italic;color:var(--coral)}
+  .section-desc{margin-top:20px;font-size:17px;color:var(--navy-soft)}
+
+  .features{background:var(--cream)}
+  .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1300px;margin:0 auto}
+  .feature-card{background:white;padding:40px 32px;border-radius:28px;transition:all .4s cubic-bezier(.2,.8,.2,1);border:1px solid rgba(26,34,56,.06);position:relative;overflow:hidden}
+  .feature-card:hover{transform:translateY(-8px);box-shadow:0 30px 60px rgba(26,34,56,.08)}
+  .feature-card:hover .feature-icon{background:var(--coral);color:white;transform:rotate(-8deg) scale(1.05)}
+  .feature-icon{width:64px;height:64px;border-radius:20px;background:var(--cream);display:grid;place-items:center;margin-bottom:24px;transition:all .4s;color:var(--coral)}
+  .feature-title{font-family:'Fraunces',serif;font-size:24px;color:var(--navy);margin-bottom:12px;font-weight:500}
+  .feature-desc{color:var(--navy-soft);font-size:15px}
+
+  .ingredients{background:var(--navy);color:var(--cream);position:relative;overflow:hidden}
+  .ingredients::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,var(--coral) 0%,transparent 70%);opacity:.15}
+  .ingredients .section-title{color:var(--cream)}
+  .ingredients .section-desc{color:rgba(251,243,228,.7)}
+  .ing-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;max-width:1200px;margin:0 auto;align-items:center;position:relative;z-index:2}
+  .ing-visual{position:relative;aspect-ratio:1;border-radius:32px;overflow:hidden;background:linear-gradient(135deg,#F7C59F 0%,#E8826A 50%,#C75E47 100%);position:relative}
+  .ing-visual::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.4) 0%,transparent 50%)}
+  .ing-visual::after{content:'';position:absolute;inset:20%;background:radial-gradient(circle,rgba(255,255,255,.3) 0%,transparent 70%);border-radius:50%;filter:blur(40px)}
+  .ing-visual-inner{position:absolute;inset:0;display:grid;place-items:center;font-family:'Fraunces',serif;font-size:100px;color:rgba(255,255,255,.85);font-style:italic;font-weight:300;text-shadow:0 10px 30px rgba(0,0,0,.15)}
+  .ing-list{display:flex;flex-direction:column;gap:8px}
+  .ing-item{padding:24px;border-radius:20px;background:rgba(251,243,228,.04);border:1px solid rgba(251,243,228,.08);transition:all .3s;cursor:pointer}
+  .ing-item:hover{background:rgba(251,243,228,.08);border-color:var(--coral)}
+  .ing-head{display:flex;justify-content:space-between;align-items:center}
+  .ing-name{font-family:'Fraunces',serif;font-size:22px;font-weight:400}
+  .ing-tag{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--coral);font-weight:600}
+  .ing-desc{margin-top:8px;color:rgba(251,243,228,.6);font-size:14px}
+
+  .howto{background:linear-gradient(180deg,var(--cream) 0%,var(--cream-2) 100%)}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;max-width:1200px;margin:0 auto;position:relative}
+  .steps::before{content:'';position:absolute;top:50px;left:10%;right:10%;height:2px;background:repeating-linear-gradient(90deg,var(--coral) 0,var(--coral) 8px,transparent 8px,transparent 16px);opacity:.4}
+  .step{position:relative;text-align:center;padding:20px}
+  .step-num{width:100px;height:100px;border-radius:50%;background:white;display:grid;place-items:center;margin:0 auto 30px;font-family:'Fraunces',serif;font-size:48px;color:var(--coral);font-weight:300;box-shadow:0 20px 40px rgba(232,130,106,.2);border:2px solid var(--cream);position:relative;z-index:2}
+  .step-title{font-family:'Fraunces',serif;font-size:24px;color:var(--navy);margin-bottom:10px}
+  .step-desc{color:var(--navy-soft);font-size:15px;max-width:280px;margin:0 auto}
+
+  .products{background:var(--cream)}
+  .product-tabs{display:flex;justify-content:center;gap:10px;margin-bottom:50px;flex-wrap:wrap}
+  .tab{padding:12px 24px;border-radius:100px;background:white;border:1px solid rgba(26,34,56,.08);cursor:pointer;font-size:14px;font-weight:500;color:var(--navy);transition:all .3s}
+  .tab.active{background:var(--navy);color:var(--cream);border-color:var(--navy)}
+  .tab:hover:not(.active){border-color:var(--coral);color:var(--coral)}
+  .product-display{max-width:1200px;margin:0 auto;background:white;border-radius:40px;padding:60px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;box-shadow:0 40px 80px rgba(26,34,56,.06)}
+  .product-img{aspect-ratio:1;border-radius:28px;overflow:hidden;background:linear-gradient(135deg,var(--peach),var(--cream));display:grid;place-items:center;position:relative}
+  .product-img::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 30%,rgba(255,255,255,.5) 0%,transparent 50%)}
+  .product-img .bottle-wrap{animation:none;filter:drop-shadow(0 20px 40px rgba(26,34,56,.2));width:70%;max-width:70%}
+  .product-name{font-family:'Fraunces',serif;font-size:48px;line-height:1;color:var(--navy);font-weight:400;margin-bottom:10px}
+  .product-name em{color:var(--coral);font-style:italic}
+  .product-tag{color:var(--coral);font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:20px}
+  .product-desc{color:var(--navy-soft);font-size:16px;margin-bottom:30px}
+  .product-specs{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:36px;padding:24px 0;border-top:1px solid rgba(26,34,56,.1);border-bottom:1px solid rgba(26,34,56,.1)}
+  .spec-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--navy-soft)}
+  .spec-value{font-family:'Fraunces',serif;font-size:20px;color:var(--navy);margin-top:4px}
+  .product-footer{display:flex;justify-content:space-between;align-items:center;gap:20px}
+  .price{font-family:'Fraunces',serif;font-size:36px;color:var(--navy)}
+  .price small{font-size:14px;color:var(--navy-soft);font-family:'Inter',sans-serif;margin-left:4px}
+
+  .testimonials{background:var(--peach);position:relative;overflow:hidden}
+  .testimonials::before{content:'"';position:absolute;top:-60px;left:40px;font-family:'Fraunces',serif;font-size:400px;color:rgba(255,255,255,.3);line-height:1}
+  .test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1300px;margin:0 auto;position:relative;z-index:2}
+  .test-card{background:var(--cream);padding:36px;border-radius:28px;transition:transform .3s}
+  .test-card:hover{transform:translateY(-6px)}
+  .stars{color:var(--coral);margin-bottom:18px;font-size:16px;letter-spacing:2px}
+  .test-quote{font-family:'Fraunces',serif;font-size:19px;color:var(--navy);line-height:1.4;margin-bottom:28px;font-weight:400}
+  .test-author{display:flex;align-items:center;gap:12px}
+  .avatar{width:44px;height:44px;border-radius:50%;background:var(--coral);display:grid;place-items:center;color:white;font-weight:600}
+  .author-name{font-weight:600;color:var(--navy);font-size:14px}
+  .author-meta{font-size:12px;color:var(--navy-soft)}
+
+  .faq{background:var(--cream)}
+  .faq-wrap{max-width:820px;margin:0 auto}
+  .faq-item{border-bottom:1px solid rgba(26,34,56,.12);padding:0}
+  .faq-q{width:100%;background:none;border:none;padding:28px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-family:'Fraunces',serif;font-size:22px;color:var(--navy);font-weight:400;text-align:left}
+  .faq-icon{width:36px;height:36px;border-radius:50%;background:var(--cream-2);display:grid;place-items:center;transition:all .3s;flex-shrink:0}
+  .faq-item.open .faq-icon{background:var(--coral);color:white;transform:rotate(45deg)}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease;color:var(--navy-soft);font-size:15px}
+  .faq-item.open .faq-a{max-height:300px}
+  .faq-a p{padding:0 0 28px}
+
+  .cta{background:var(--navy);color:var(--cream);text-align:center;padding:140px 40px;position:relative;overflow:hidden}
+  .cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,var(--coral) 0%,transparent 60%);opacity:.2}
+  .cta-inner{position:relative;z-index:2;max-width:700px;margin:0 auto}
+  .cta h2{font-family:'Fraunces',serif;font-size:clamp(40px,6vw,72px);line-height:1;letter-spacing:-0.03em;font-weight:400;margin-bottom:24px}
+  .cta h2 em{color:var(--coral);font-style:italic}
+  .cta p{color:rgba(251,243,228,.7);font-size:17px;margin-bottom:40px}
+  .newsletter{display:flex;gap:10px;max-width:460px;margin:0 auto;flex-wrap:wrap}
+  .newsletter input{flex:1;min-width:200px;padding:16px 22px;border-radius:100px;border:1px solid rgba(251,243,228,.15);background:rgba(251,243,228,.05);color:var(--cream);font-family:inherit;font-size:15px;outline:none}
+  .newsletter input::placeholder{color:rgba(251,243,228,.4)}
+  .newsletter input:focus{border-color:var(--coral)}
+  .newsletter button{background:var(--coral);color:white;padding:16px 28px;border-radius:100px;border:none;cursor:pointer;font-weight:600;font-size:15px;transition:all .3s;font-family:inherit}
+  .newsletter button:hover{background:var(--cream);color:var(--navy)}
+
+  footer{background:var(--ink);color:rgba(251,243,228,.6);padding:60px 40px 30px}
+  .foot-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;max-width:1300px;margin:0 auto 50px}
+  .foot-logo{font-family:'Fraunces',serif;font-size:32px;color:var(--cream);margin-bottom:14px}
+  .foot-logo span{color:var(--coral)}
+  .foot-about{font-size:14px;max-width:320px}
+  .foot-col h4{color:var(--cream);font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+  .foot-col a{display:block;color:rgba(251,243,228,.6);text-decoration:none;font-size:14px;padding:5px 0;transition:color .2s}
+  .foot-col a:hover{color:var(--coral)}
+  .foot-bottom{max-width:1300px;margin:0 auto;padding-top:30px;border-top:1px solid rgba(251,243,228,.08);display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-size:13px}
+
+  .reveal{opacity:0;transform:translateY(40px);transition:all .9s cubic-bezier(.2,.8,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(max-width:960px){
+    nav{padding:14px 20px}
+    nav.scrolled{padding:12px 20px}
+    .nav-links{display:none}
+    section{padding:80px 20px}
+    .hero{grid-template-columns:1fr;padding:110px 20px 60px;gap:40px;text-align:center}
+    .hero-text .eyebrow{justify-content:center}
+    .hero-cta{justify-content:center}
+    .hero-stats{justify-content:center;gap:24px}
+    .sun-disc{width:360px;height:360px}
+    .bottle-wrap{width:260px}
+    .features-grid,.steps,.test-grid{grid-template-columns:1fr;gap:18px}
+    .steps::before{display:none}
+    .ing-grid,.product-display{grid-template-columns:1fr;gap:40px;padding:30px}
+    .product-display{padding:30px}
+    .foot-top{grid-template-columns:1fr 1fr;gap:30px}
+    .marquee-item{font-size:20px}
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="logo">Soleil<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#features">Benefits</a></li>
+    <li><a href="#ingredients">Ingredients</a></li>
+    <li><a href="#howto">How to Use</a></li>
+    <li><a href="#products">Shop</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="#products" class="nav-cta">Shop Now →</a>
+</nav>
+
+<!-- SVG DEFS (hidden, reusable bottle) -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="bottleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBF3E4"/>
+      <stop offset="50%" stop-color="#F7C59F"/>
+      <stop offset="100%" stop-color="#E8826A"/>
+    </linearGradient>
+    <linearGradient id="bottleCap" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1A2238"/>
+      <stop offset="100%" stop-color="#2E3A5F"/>
+    </linearGradient>
+    <linearGradient id="bottleGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBF3E4"/>
+      <stop offset="100%" stop-color="#F7C59F"/>
+    </linearGradient>
+    <linearGradient id="bottleGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8826A"/>
+      <stop offset="100%" stop-color="#C75E47"/>
+    </linearGradient>
+
+    <symbol id="bottle" viewBox="0 0 200 400">
+      <!-- cap -->
+      <rect x="70" y="10" width="60" height="60" rx="8" fill="url(#bottleCap)"/>
+      <rect x="75" y="0" width="50" height="20" rx="6" fill="#0F1524"/>
+      <!-- neck -->
+      <rect x="80" y="70" width="40" height="30" fill="#2E3A5F"/>
+      <!-- body -->
+      <path d="M 40 110 Q 40 100 50 100 L 150 100 Q 160 100 160 110 L 165 380 Q 165 395 150 395 L 50 395 Q 35 395 35 380 Z" fill="url(#bottleGrad)"/>
+      <!-- highlight -->
+      <path d="M 60 120 L 65 380 Q 65 385 60 385 L 55 380 L 55 125 Q 55 120 60 120 Z" fill="rgba(255,255,255,.35)"/>
+      <!-- label -->
+      <rect x="55" y="200" width="90" height="120" rx="6" fill="rgba(255,255,255,.85)"/>
+      <text x="100" y="240" text-anchor="middle" font-family="Fraunces,serif" font-size="22" font-style="italic" fill="#E8826A" font-weight="400">Soleil</text>
+      <text x="100" y="275" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#1A2238" letter-spacing="2">SPF 50</text>
+      <line x1="70" y1="285" x2="130" y2="285" stroke="#E8826A" stroke-width="1"/>
+      <text x="100" y="305" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#2E3A5F" letter-spacing="1.5">REEF SAFE</text>
+      <text x="100" y="320" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#2E3A5F" letter-spacing="1.5">50 ML</text>
+    </symbol>
+  </defs>
+</svg>
+
+<section class="hero">
+  <div class="hero-text">
+    <div class="eyebrow">Summer 2026 · New Formula</div>
+    <h1 class="hero-title">Skin that <em>loves</em><br/>the sun back.</h1>
+    <p class="hero-sub">A weightless, invisible shield engineered for every day. Broad-spectrum SPF 50, reef-safe minerals, and a glow that looks like vacation — even on a Tuesday.</p>
+    <div class="hero-cta">
+      <a href="#products" class="btn-primary">Shop SPF 50 — $34</a>
+      <a href="#features" class="btn-ghost">Discover the science →</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">SPF 50</div><div class="stat-label">Broad Spectrum</div></div>
+      <div><div class="stat-num">80 min</div><div class="stat-label">Water Resistant</div></div>
+      <div><div class="stat-num">100%</div><div class="stat-label">Reef Safe</div></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <svg class="sun-rays" viewBox="0 0 200 200" fill="none">
+      <g stroke="#E8826A" stroke-width="1.2" opacity=".4">
+        <line x1="100" y1="10" x2="100" y2="30"/>
+        <line x1="100" y1="170" x2="100" y2="190"/>
+        <line x1="10" y1="100" x2="30" y2="100"/>
+        <line x1="170" y1="100" x2="190" y2="100"/>
+        <line x1="35" y1="35" x2="50" y2="50"/>
+        <line x1="150" y1="150" x2="165" y2="165"/>
+        <line x1="165" y1="35" x2="150" y2="50"/>
+        <line x1="50" y1="150" x2="35" y2="165"/>
+      </g>
+    </svg>
+    <div class="sun-disc"></div>
+    <div class="bottle-wrap">
+      <svg class="bottle-svg" viewBox="0 0 200 400"><use href="#bottle"/></svg>
+    </div>
+    <div class="floating-badge badge-1">
+      <div class="badge-icon">✦</div>
+      <div>Dermatologist<br/>tested</div>
+    </div>
+    <div class="floating-badge badge-2">
+      <div class="badge-icon">☀</div>
+      <div>UVA + UVB<br/>protection</div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span class="marquee-item">Invisible Finish</span>
+    <span class="marquee-item">Non-Greasy</span>
+    <span class="marquee-item">Vegan Formula</span>
+    <span class="marquee-item">Fragrance-Free Option</span>
+    <span class="marquee-item">Reef-Safe Minerals</span>
+    <span class="marquee-item">Made in France</span>
+    <span class="marquee-item">Invisible Finish</span>
+    <span class="marquee-item">Non-Greasy</span>
+    <span class="marquee-item">Vegan Formula</span>
+    <span class="marquee-item">Fragrance-Free Option</span>
+    <span class="marquee-item">Reef-Safe Minerals</span>
+    <span class="marquee-item">Made in France</span>
+  </div>
+</div>
+
+<section class="features" id="features">
+  <div class="section-head reveal">
+    <div class="section-eyebrow">Why Soleil</div>
+    <h2 class="section-title">Sunscreen, <em>reimagined</em> from the ground up.</h2>
+    <p class="section-desc">Every drop is crafted to feel less like protection and more like skincare — because it is both.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card reveal">
+      <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></div>
+      <h3 class="feature-title">Broad Spectrum SPF 50</h3>
+      <p class="feature-desc">Blocks 98% of UVA and UVB rays with clinically tested, photostable filters that don't degrade in sun.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg></div>
+      <h3 class="feature-title">Weightless Texture</h3>
+      <p class="feature-desc">A silky serum-cream hybrid that absorbs in seconds. No white cast. No sticky residue. Just skin.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg></div>
+      <h3 class="feature-title">Reef-Safe Minerals</h3>
+      <p class="feature-desc">Free of oxybenzone and octinoxate. Safe for coral reefs, marine life, and the oceans you love.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></div>
+      <h3 class="feature-title">Skincare First</h3>
+      <p class="feature-desc">Infused with niacinamide, hyaluronic acid, and vitamin E to hydrate, brighten, and protect against pollution.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h3 class="feature-title">All Skin Tones</h3>
+      <p class="feature-desc">Rigorously tested across the full Fitzpatrick scale. Truly invisible on every complexion, every undertone.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg></div>
+      <h3 class="feature-title">Planet-Kind Packaging</h3>
+      <p class="feature-desc">Recycled ocean-bound plastic tubes. Refillable system. Carbon-neutral shipping from our lab in Provence.</p>
+    </div>
+  </div>
+</section>
+
+<section class="ingredients" id="ingredients">
+  <div class="section-head reveal">
+    <div class="section-eyebrow">The Formula</div>
+    <h2 class="section-title">Clean ingredients. <em>No compromises.</em></h2>
+    <p class="section-desc">We obsess over every molecule so you can obsess over the beach.</p>
+  </div>
+  <div class="ing-grid">
+    <div class="ing-visual reveal">
+      <div class="ing-visual-inner">glow</div>
+    </div>
+    <div class="ing-list reveal">
+      <div class="ing-item">
+        <div class="ing-head"><div class="ing-name">Zinc Oxide 22%</div><div class="ing-tag">Mineral Filter</div></div>
+        <div class="ing-desc">Non-nano, reef-safe UV shield with a silky, invisible finish.</div>
+      </div>
+      <div class="ing-item">
+        <div class="ing-head"><div class="ing-name">Niacinamide</div><div class="ing-tag">Brightening</div></div>
+        <div class="ing-desc">Reduces dark spots, refines pores, and strengthens the skin barrier.</div>
+      </div>
+      <div class="ing-item">
+        <div class="ing-head"><div class="ing-name">Hyaluronic Acid</div><div class="ing-tag">Hydration</div></div>
+        <div class="ing-desc">Triple-weight complex that plumps skin from surface to dermis.</div>
+      </div>
+      <div class="ing-item">
+        <div class="ing-head"><div class="ing-name">Vitamin E + C</div><div class="ing-tag">Antioxidant</div></div>
+        <div class="ing-desc">Neutralizes free radicals and boosts photoprotection by 4×.</div>
+      </div>
+      <div class="ing-item">
+        <div class="ing-head"><div class="ing-name">Squalane</div><div class="ing-tag">Barrier Repair</div></div>
+        <div class="ing-desc">Plant-derived lipid that mimics skin's natural moisture for a dewy glow.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="howto" id="howto">
+  <div class="section-head reveal">
+    <div class="section-eyebrow">How to Use</div>
+    <h2 class="section-title">Three steps to <em>golden</em> skin.</h2>
+  </div>
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <h3 class="step-title">Shake & Dispense</h3>
+      <p class="step-desc">Apply two finger-lengths to clean, moisturized skin — 15 minutes before sun exposure.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">02</div>
+      <h3 class="step-title">Blend & Glow</h3>
+      <p class="step-desc">Massage in upward strokes. The formula melts in with zero white cast and a soft-focus finish.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">03</div>
+      <h3 class="step-title">Reapply</h3>
+      <p class="step-desc">Top up every 2 hours, or after 80 minutes of swimming. Layer seamlessly over makeup.</p>
+    </div>
+  </div>
+</section>
+
+<section class="products" id="products">
+  <div class="section-head reveal">
+    <div class="section-eyebrow">The Collection</div>
+    <h2 class="section-title">Three formulas. <em>One radiant</em> finish.</h2>
+  </div>
+  <div class="product-tabs reveal">
+    <button class="tab active" data-p="0">Daily Shield SPF 30</button>
+    <button class="tab" data-p="1">Active SPF 50</button>
+    <button class="tab" data-p="2">Tinted Glow SPF 50+</button>
+  </div>
+  <div class="product-display reveal" id="productDisplay">
+    <div class="product-img">
+      <div class="bottle-wrap" id="pBottle">
+        <svg class="bottle-svg" viewBox="0 0 200 400"><use href="#bottle"/></svg>
+      </div>
+    </div>
+    <div>
+      <div class="product-tag" id="pTag">Bestseller · Active</div>
+      <h3 class="product-name" id="pName">Active <em>SPF 50</em></h3>
+      <p class="product-desc" id="pDesc">Our flagship formula. A weightless, reef-safe mineral sunscreen engineered for beach days, trail runs, and everything between.</p>
+      <div class="product-specs">
+        <div><div class="spec-label">SPF Level</div><div class="spec-value" id="pSpec1">50</div></div>
+        <div><div class="spec-label">Size</div><div class="spec-value" id="pSpec2">50 ml / 1.7 fl oz</div></div>
+        <div><div class="spec-label">Skin Type</div><div class="spec-value" id="pSpec3">All Types</div></div>
+        <div><div class="spec-label">Finish</div><div class="spec-value" id="pSpec4">Invisible Matte</div></div>
+      </div>
+      <div class="product-footer">
+        <div class="price" id="pPrice">$34<small>/ tube</small></div>
+        <button class="btn-primary">Add to Bag →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <div class="section-head reveal">
+    <div class="section-eyebrow">Loved by 240,000+ Humans</div>
+    <h2 class="section-title" style="color:var(--navy)">The reviews are <em>glowing.</em></h2>
+  </div>
+  <div class="test-grid">
+    <div class="test-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="test-quote">"Finally — a sunscreen that doesn't make my brown skin look ghostly. I'm never going back."</p>
+      <div class="test-author"><div class="avatar">AM</div><div><div class="author-name">Amara M.</div><div class="author-meta">Verified Buyer · Lagos</div></div></div>
+    </div>
+    <div class="test-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="test-quote">"It layers under makeup like a primer. My dermatologist asked what I was using."</p>
+      <div class="test-author"><div class="avatar">SK</div><div><div class="author-name">Sofia K.</div><div class="author-meta">Verified Buyer · Barcelona</div></div></div>
+    </div>
+    <div class="test-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="test-quote">"Surfed for 3 hours in Costa Rica — zero burn, zero stinging eyes. This is the real deal."</p>
+      <div class="test-author"><div class="avatar">JT</div><div><div class="author-name">Jordan T.</div><div class="author-meta">Verified Buyer · Sydney</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="section-head reveal">
+    <div class="section-eyebrow">Questions</div>
+    <h2 class="section-title">Everything you <em>need to know.</em></h2>
+  </div>
+  <div class="faq-wrap">
+    <div class="faq-item">
+      <button class="faq-q">Is Soleil safe for sensitive skin?<span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>Yes. Our formula is fragrance-free, dermatologist-tested, and approved for sensitive, acne-prone, and rosacea-prone skin.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Does it leave a white cast on darker skin tones?<span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>No. We use a proprietary micro-milling process for our zinc oxide that renders it truly invisible across all Fitzpatrick skin types.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Can I wear it under makeup?<span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>Absolutely. Soleil doubles as a makeup primer. Apply, wait 60 seconds, then layer foundation.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">How often should I reapply?<span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>Every 2 hours in direct sun, and immediately after 80 minutes of swimming or heavy sweating.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">What makes it reef-safe?<span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>We exclude oxybenzone, octinoxate, octocrylene, and other chemicals linked to coral bleaching.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="cta-inner reveal">
+    <h2>Your skin deserves a <em>better</em> summer.</h2>
+    <p>Join 240,000+ humans who've upgraded their sun ritual. Get 15% off your first order.</p>
+    <form class="newsletter" onsubmit="event.preventDefault();this.querySelector('button').innerText='Subscribed ✓';this.querySelector('input').value='';">
+      <input type="email" placeholder="your@email.com" required/>
+      <button type="submit">Get 15% Off</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-top">
+    <div>
+      <div class="foot-logo">Soleil<span>.</span></div>
+      <p class="foot-about">Sunscreen engineered for the skin you live in. Made in Provence. Loved on six continents.</p>
+    </div>
+    <div class="foot-col"><h4>Shop</h4><a href="#">Face SPF 30</a><a href="#">Face SPF 50</a><a href="#">Tinted Glow</a><a href="#">Body Mist</a></div>
+    <div class="foot-col"><h4>Learn</h4><a href="#">Ingredient Glossary</a><a href="#">Sun Safety Guide</a><a href="#">Our Science</a><a href="#">Sustainability</a></div>
+    <div class="foot-col"><h4>Support</h4><a href="#">Contact</a><a href="#">Shipping</a><a href="#">Returns</a><a href="#">FAQ</a></div>
+  </div>
+  <div class="foot-bottom">
+    <div>© 2026 Soleil Laboratories. All rights reserved.</div>
+    <div>Privacy · Terms · Accessibility</div>
+  </div>
+</footer>
+
+<script>
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40)});
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  document.querySelectorAll('.faq-q').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const item=btn.parentElement;
+      const wasOpen=item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+      if(!wasOpen)item.classList.add('open');
+    });
+  });
+
+  const products=[
+    {tag:'Everyday Essential',name:'Daily Shield <em>SPF 30</em>',desc:'A featherweight daily moisturizer with SPF 30. Ideal for commute, office, and overcast days. Wears beautifully under makeup.',s1:'30',s2:'50 ml / 1.7 fl oz',s3:'Normal / Dry',s4:'Dewy Radiance',price:'$28',grad:'url(#bottleGrad2)'},
+    {tag:'Bestseller · Active',name:'Active <em>SPF 50</em>',desc:'Our flagship formula. A weightless, reef-safe mineral sunscreen engineered for beach days, trail runs, and everything between.',s1:'50',s2:'50 ml / 1.7 fl oz',s3:'All Types',s4:'Invisible Matte',price:'$34',grad:'url(#bottleGrad)'},
+    {tag:'New · Tinted',name:'Tinted Glow <em>SPF 50+</em>',desc:'A skin-tint sunscreen that evens tone and adds a sunlit glow. Three flexible shades adapt to every complexion.',s1:'50+',s2:'40 ml / 1.35 fl oz',s3:'All Types',s4:'Natural Glow',price:'$42',grad:'url(#bottleGrad3)'}
+  ];
+  document.querySelectorAll('.tab').forEach(t=>{
+    t.addEventListener('click',()=>{
+      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      const p=products[+t.dataset.p];
+      document.getElementById('pTag').innerText=p.tag;
+      document.getElementById('pName').innerHTML=p.name;
+      document.getElementById('pDesc').innerText=p.desc;
+      document.getElementById('pSpec1').innerText=p.s1;
+      document.getElementById('pSpec2').innerText=p.s2;
+      document.getElementById('pSpec3').innerText=p.s3;
+      document.getElementById('pSpec4').innerText=p.s4;
+      document.getElementById('pPrice').innerHTML=p.price+'<small>/ tube</small>';
+      // swap bottle gradient
+      const bottle=document.querySelector('#pBottle svg use');
+      // We need to update the fill of the body path - simpler: replace entire bottle svg
+      const wrap=document.getElementById('pBottle');
+      wrap.innerHTML=`<svg class="bottle-svg" viewBox="0 0 200 400">
+        <rect x="70" y="10" width="60" height="60" rx="8" fill="url(#bottleCap)"/>
+        <rect x="75" y="0" width="50" height="20" rx="6" fill="#0F1524"/>
+        <rect x="80" y="70" width="40" height="30" fill="#2E3A5F"/>
+        <path d="M 40 110 Q 40 100 50 100 L 150 100 Q 160 100 160 110 L 165 380 Q 165 395 150 395 L 50 395 Q 35 395 35 380 Z" fill="${p.grad}"/>
+        <path d="M 60 120 L 65 380 Q 65 385 60 385 L 55 380 L 55 125 Q 55 120 60 120 Z" fill="rgba(255,255,255,.35)"/>
+        <rect x="55" y="200" width="90" height="120" rx="6" fill="rgba(255,255,255,.85)"/>
+        <text x="100" y="240" text-anchor="middle" font-family="Fraunces,serif" font-size="22" font-style="italic" fill="#E8826A" font-weight="400">Soleil</text>
+        <text x="100" y="275" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#1A2238" letter-spacing="2">SPF ${p.s1}</text>
+        <line x1="70" y1="285" x2="130" y2="285" stroke="#E8826A" stroke-width="1"/>
+        <text x="100" y="305" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#2E3A5F" letter-spacing="1.5">REEF SAFE</text>
+        <text x="100" y="320" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#2E3A5F" letter-spacing="1.5">${p.s2.split('/')[0].trim()}</text>
+      </svg>`;
+    });
+  });
+</script>
+</body>
+</html>
